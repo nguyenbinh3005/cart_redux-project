@@ -29,3 +29,10 @@ export const actUpdateProductInCart = (product, quantity) => {
         quantity
     }
 }
+
+export const actResetAllProductInCart = (cart) => {
+    return {
+        type : Types.RESET_ALL_PRODUCT_IN_CART,
+        cart
+    }
+}

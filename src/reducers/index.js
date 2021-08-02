@@ -6,7 +6,7 @@ import message from './message';
 const appReducers = combineReducers({
     products,
     cart,
-    message
+    message,
 });
 
 export default appReducers;

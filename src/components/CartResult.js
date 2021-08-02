@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import * as Message from './../constants/Message';
 
 class CartResult extends Component {
     render() {
@@ -17,7 +18,12 @@ class CartResult extends Component {
                     </h4>
                 </td>
                 <td colSpan="3">
-                    <button type="button" className="btn btn-primary waves-effect waves-light">Complete purchase
+                    <button 
+                        type="button" 
+                        className="btn btn-primary waves-effect waves-light"
+                        onClick={ () => this.removeCart(cart) }
+                    >
+                        Complete purchase
                         <i className="fa fa-angle-right right"></i>
                     </button>
                 </td>
@@ -34,6 +40,13 @@ class CartResult extends Component {
         }
         return total;
     }
+
+    removeCart = (cart) => {
+        var { onResetAllProductInCart, onChangeMessage }=this.props;
+        onResetAllProductInCart(cart);
+        onChangeMessage(Message.MSG_COMPLETED_PURCHASE);
+    }
+
  }
 
 export default CartResult;

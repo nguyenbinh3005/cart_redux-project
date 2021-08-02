@@ -5,28 +5,28 @@ import Cart from './../components/Cart';
 import CartItem from './../components/CartItem';
 import CartResult from './../components/CartResult';
 import * as Message from './../constants/Message';
-import { actRemoveProductInCart, actChangeMessage, actUpdateProductInCart } from './../actions/index';
+import { actRemoveProductInCart, actChangeMessage, actUpdateProductInCart, actResetAllProductInCart } from './../actions/index';
 
 class CartContainer extends Component {
     render() {
         var { cart } = this.props;
         return (
             <Cart>
-                { this.showCartItem(cart) }
-                { this.showTotalAmount(cart) }
+                {this.showCartItem(cart)}
+                {this.showTotalAmount(cart)}
             </Cart>
         );
     }
 
     showCartItem = (cart) => {
-        var { onDeleteProductInCart, onChangeMessage, onUpdateProductInCart } = this.props;
+        var { onDeleteProductInCart, onChangeMessage, onUpdateProductInCart} = this.props;
         var result = <tr>
-                        <td>{Message.MSG_CART_EMPTY}</td>
-                    </tr> ;
-        if(cart.length > 0){
+            <td>{Message.MSG_CART_EMPTY}</td>
+        </tr>;
+        if (cart.length > 0) {
             result = cart.map((item, index) => {
                 return (
-                    <CartItem 
+                    <CartItem
                         key={index}
                         item={item}
                         index={index}
@@ -41,9 +41,14 @@ class CartContainer extends Component {
     }
 
     showTotalAmount = (cart) => {
+        var { onResetAllProductInCart, onChangeMessage} = this.props;
         var result = null;
-        if(cart.length > 0){
-            result = <CartResult cart={cart}/>
+        if (cart.length > 0) {
+            result = <CartResult 
+                        cart={cart}
+                        onChangeMessage={onChangeMessage}
+                        onResetAllProductInCart={onResetAllProductInCart}
+                    />
         }
         return result;
     }
@@ -63,10 +68,9 @@ CartContainer.propTypes = {
         }).isRequired,
         quantity: PropTypes.number.isRequired
     })).isRequired,
-    onDeleteProductInCart : PropTypes.func.isRequired,
-    onChangeMessage : PropTypes.func.isRequired,
-    onUpdateProductInCart : PropTypes.func.isRequired,
-
+    onDeleteProductInCart: PropTypes.func.isRequired,
+    onChangeMessage: PropTypes.func.isRequired,
+    onResetAllProductInCart : PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => {
@@ -77,16 +81,18 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, props) => {
     return {
-        onDeleteProductInCart : (product) => {
+        onDeleteProductInCart: (product) => {
             dispatch(actRemoveProductInCart(product));
         },
-        onChangeMessage : (message) => {
+        onChangeMessage: (message) => {
             dispatch(actChangeMessage(message));
         },
-        onUpdateProductInCart : (product, quantity) => {
+        onUpdateProductInCart: (product, quantity) => {
             dispatch(actUpdateProductInCart(product, quantity));
+        },
+        onResetAllProductInCart: (cart) => {
+            dispatch(actResetAllProductInCart(cart));
         }
-
     }
 }
 
